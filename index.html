@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#25324a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="週期計算" />
+    <title>月經週期計算器</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <h1>月經週期計算器</h1>
+            <p>週期、排卵、受孕窗、黃體期與個人記錄</p>
+          </div>
+        </div>
+        <div class="today-badge" aria-label="今天日期">
+          <span>今天</span>
+          <strong id="todayText">--</strong>
+        </div>
+      </header>
+
+      <section class="health-banner" role="note">
+        本工具只做週期估算，不能取代醫療診斷、避孕方式或懷孕判定。若週期長期少於 24 天或多於 38 天、出血異常、劇烈疼痛，或 90 天未來月經，請諮詢婦產科。
+      </section>
+
+      <section class="workspace">
+        <form class="panel input-panel" id="cycleForm">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">週期設定</p>
+              <h2>基本資料</h2>
+            </div>
+            <button class="ghost-button" type="button" id="resetBtn">重設</button>
+          </div>
+
+          <label class="field">
+            <span>上次月經第一天</span>
+            <input id="lastPeriod" name="lastPeriod" type="date" required />
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>平均週期天數</span>
+              <input id="cycleLength" name="cycleLength" type="number" min="21" max="45" step="1" value="28" required />
+            </label>
+            <label class="field">
+              <span>月經持續天數</span>
+              <input id="periodLength" name="periodLength" type="number" min="2" max="10" step="1" value="5" required />
+            </label>
+          </div>
+
+          <div class="advanced-row">
+            <label class="switch">
+              <input id="advancedToggle" type="checkbox" />
+              <span>自訂黃體期</span>
+            </label>
+            <span id="lutealHint">預設 14 天</span>
+          </div>
+
+          <label class="field luteal-field" id="lutealField" hidden>
+            <span>黃體期天數</span>
+            <input id="lutealLength" name="lutealLength" type="range" min="7" max="19" step="1" value="14" />
+            <output id="lutealOutput" for="lutealLength">14 天</output>
+          </label>
+
+          <label class="field">
+            <span>預測幾個週期</span>
+            <select id="cyclesAhead" name="cyclesAhead">
+              <option value="3">3 個週期</option>
+              <option value="6" selected>6 個週期</option>
+              <option value="9">9 個週期</option>
+              <option value="12">12 個週期</option>
+            </select>
+          </label>
+
+          <button class="primary-button" type="submit">計算週期</button>
+          <button class="secondary-button" type="button" id="exportBtn">匯出日曆</button>
+          <p class="form-note" id="validationNote" aria-live="polite"></p>
+        </form>
+
+        <section class="panel status-panel" aria-live="polite">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">目前狀態</p>
+              <h2 id="phaseTitle">尚未計算</h2>
+            </div>
+            <span class="phase-token" id="phaseToken">--</span>
+          </div>
+
+          <div class="cycle-visual">
+            <div class="cycle-ring" id="cycleRing" aria-label="週期視覺化">
+              <div class="cycle-pointer" id="cyclePointer"></div>
+              <div class="ring-center">
+                <span id="cycleDayText">第 -- 天</span>
+                <strong id="phaseName">等待輸入</strong>
+                <small id="phaseRange">--</small>
+              </div>
+            </div>
+          </div>
+
+          <dl class="summary-grid">
+            <div class="metric">
+              <dt>下次月經</dt>
+              <dd id="nextPeriodText">--</dd>
+            </div>
+            <div class="metric">
+              <dt>排卵日</dt>
+              <dd id="ovulationText">--</dd>
+            </div>
+            <div class="metric">
+              <dt>受孕窗</dt>
+              <dd id="fertileText">--</dd>
+            </div>
+            <div class="metric">
+              <dt>黃體期</dt>
+              <dd id="lutealText">--</dd>
+            </div>
+          </dl>
+        </section>
+      </section>
+
+      <section class="planner-grid">
+        <section class="panel calendar-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">月曆</p>
+              <h2 id="calendarTitle">--</h2>
+            </div>
+            <div class="calendar-actions">
+              <button type="button" class="icon-button" id="prevMonth" aria-label="上一個月">‹</button>
+              <button type="button" class="icon-button" id="currentMonth">本月</button>
+              <button type="button" class="icon-button" id="nextMonth" aria-label="下一個月">›</button>
+            </div>
+          </div>
+          <div class="weekday-grid" aria-hidden="true">
+            <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="legend" aria-label="圖例">
+            <span><i class="legend-period"></i>月經期</span>
+            <span><i class="legend-fertile"></i>受孕窗</span>
+            <span><i class="legend-ovulation"></i>排卵日</span>
+            <span><i class="legend-luteal"></i>黃體期</span>
+            <span><i class="legend-note"></i>有記錄</span>
+          </div>
+        </section>
+
+        <section class="panel timeline-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">預測</p>
+              <h2>接下來的週期</h2>
+            </div>
+          </div>
+          <ol class="cycle-list" id="cycleList"></ol>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">本機記錄</p>
+              <h2 id="logTitle">今日記錄</h2>
+            </div>
+            <span class="selected-date" id="selectedDateText">--</span>
+          </div>
+
+          <label class="field">
+            <span>流量</span>
+            <select id="flowLevel">
+              <option value="">未記錄</option>
+              <option value="light">少量</option>
+              <option value="medium">中等</option>
+              <option value="heavy">偏多</option>
+            </select>
+          </label>
+
+          <label class="field pain-field">
+            <span>疼痛程度</span>
+            <input id="painLevel" type="range" min="0" max="10" step="1" value="0" />
+            <output id="painOutput" for="painLevel">0 / 10</output>
+          </label>
+
+          <fieldset class="mood-field">
+            <legend>心情</legend>
+            <label><input type="radio" name="mood" value="" checked />未記錄</label>
+            <label><input type="radio" name="mood" value="steady" />穩定</label>
+            <label><input type="radio" name="mood" value="sensitive" />敏感</label>
+            <label><input type="radio" name="mood" value="tired" />疲倦</label>
+          </fieldset>
+
+          <label class="field">
+            <span>備註</span>
+            <textarea id="notes" rows="4" placeholder="症狀、藥物、睡眠、運動等"></textarea>
+          </label>
+
+          <div class="button-row">
+            <button class="primary-button" type="button" id="saveLogBtn">儲存記錄</button>
+            <button class="secondary-button" type="button" id="clearLogBtn">清除</button>
+          </div>
+          <p class="form-note" id="logStatus" aria-live="polite"></p>
+        </section>
+      </section>
+
+      <footer class="source-footer">
+        <p>計算來源：週期從月經第一天算到下次月經第一天；排卵日以「下次月經前推黃體期」估算；受孕窗採排卵日前 5 天至排卵後 1 天。</p>
+        <p>
+          參考：
+          <a href="https://womenshealth.gov/menstrual-cycle/your-menstrual-cycle" target="_blank" rel="noreferrer">Office on Women’s Health</a>
+          <span>與</span>
+          <a href="https://www.nhs.uk/conditions/periods/fertility-in-the-menstrual-cycle/" target="_blank" rel="noreferrer">NHS</a>
+        </p>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
