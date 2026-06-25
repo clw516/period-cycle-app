@@ -3,48 +3,269 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#25324a" />
+    <meta name="theme-color" content="#19142d" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="週期計算" />
-    <title>月經週期計算器</title>
+    <title>週期計算</title>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="topbar">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true"></div>
-          <div>
-            <h1>月經週期計算器</h1>
-            <p>週期、排卵、受孕窗、黃體期與個人記錄</p>
+    <svg class="sprite" aria-hidden="true">
+      <symbol id="icon-settings" viewBox="0 0 24 24">
+        <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z" />
+        <path d="M19.4 13.4a7.8 7.8 0 0 0 .1-1.4 7.8 7.8 0 0 0-.1-1.4l2-1.5-2-3.4-2.4 1a8 8 0 0 0-2.3-1.3L14.4 3H9.6l-.4 2.4A8 8 0 0 0 7 6.7l-2.4-1-2 3.4 2 1.5a7.8 7.8 0 0 0-.1 1.4c0 .5 0 1 .1 1.4l-2 1.5 2 3.4 2.4-1a8 8 0 0 0 2.3 1.3l.4 2.4h4.8l.4-2.4a8 8 0 0 0 2.3-1.3l2.4 1 2-3.4-2.2-1.5Z" />
+      </symbol>
+      <symbol id="icon-bell" viewBox="0 0 24 24">
+        <path d="M18 8.8a6 6 0 0 0-12 0c0 7-2.5 7.2-2.5 8.9h17c0-1.7-2.5-1.9-2.5-8.9Z" />
+        <path d="M9.5 20a2.8 2.8 0 0 0 5 0" />
+      </symbol>
+      <symbol id="icon-flower" viewBox="0 0 24 24">
+        <path d="M12 8.2c2.4-4.6 7-3.4 6.9.2-.1 2.5-2.3 3.5-4.2 3.8 4.8 2 3.8 6.7.2 6.8-2.5 0-3.6-2.1-3.9-4.1-2 4.7-6.7 3.7-6.8.1 0-2.5 2.1-3.6 4.1-3.9-4.7-2-3.7-6.7-.1-6.8 2.5 0 3.5 2.1 3.8 3.9Z" />
+        <circle cx="12" cy="12" r="2.1" />
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24">
+        <path d="M7 3v3M17 3v3M4.5 8.2h15M5 5.2h14a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 19 20.2H5a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 5 5.2Z" />
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" />
+      </symbol>
+      <symbol id="icon-heart" viewBox="0 0 24 24">
+        <path d="M12 20s-7.5-4.5-9-9.2C2 7.5 4 5 7 5c1.7 0 3.1.9 4 2.3C11.9 5.9 13.3 5 15 5c3 0 5 2.5 4 5.8C19.5 15.5 12 20 12 20Z" />
+      </symbol>
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <path d="M12 12.2a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4ZM4 20.5c.9-4.1 4-6.2 8-6.2s7.1 2.1 8 6.2" />
+      </symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24">
+        <path d="m9 5 7 7-7 7" />
+      </symbol>
+      <symbol id="icon-save" viewBox="0 0 24 24">
+        <path d="M5 4.5h12l2 2v13H5v-15Z" />
+        <path d="M8 4.5v6h8v-6M8 19.5v-5h8v5" />
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M12 3v12M7 10l5 5 5-5M5 20h14" />
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24">
+        <path d="M20 7v5h-5" />
+        <path d="M4 17a8 8 0 0 0 14.6-4.5V12M4 17v-5h5" />
+      </symbol>
+      <symbol id="icon-droplet" viewBox="0 0 24 24">
+        <path d="M12 3s6 6.2 6 11a6 6 0 0 1-12 0c0-4.8 6-11 6-11Z" />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M19 15.5A8 8 0 0 1 8.5 5a8.5 8.5 0 1 0 10.5 10.5Z" />
+      </symbol>
+    </svg>
+
+    <main class="phone-app">
+      <header class="hero">
+        <div class="hero-top">
+          <button class="round-icon" type="button" data-tab-target="settings" aria-label="設定">
+            <svg><use href="#icon-settings"></use></svg>
+          </button>
+          <div class="hero-date">
+            <span>今天</span>
+            <strong id="todayText">--</strong>
           </div>
+          <button class="round-icon" type="button" data-tab-target="care" aria-label="提醒">
+            <svg><use href="#icon-bell"></use></svg>
+          </button>
         </div>
-        <div class="today-badge" aria-label="今天日期">
-          <span>今天</span>
-          <strong id="todayText">--</strong>
-        </div>
+
+        <section class="hero-main" data-tab-panel="today">
+          <p class="phase-pill" id="phaseToken">--</p>
+          <h1 id="phaseTitle">週期計算</h1>
+          <p class="hero-copy" id="statusSubline">輸入最近一次生理期，開始預測下一次週期。</p>
+          <button class="hero-action" type="button" id="startPeriodBtn">
+            <svg><use href="#icon-droplet"></use></svg>
+            生理期開始
+          </button>
+        </section>
       </header>
 
-      <section class="health-banner" role="note">
-        本工具只做週期估算，不能取代醫療診斷、避孕方式或懷孕判定。若週期長期少於 24 天或多於 38 天、出血異常、劇烈疼痛，或 90 天未來月經，請諮詢婦產科。
+      <section class="tab-panel is-active" data-tab-panel="today">
+        <section class="cycle-card">
+          <div class="cycle-ring" id="cycleRing" aria-label="週期進度">
+            <div class="cycle-pointer" id="cyclePointer"></div>
+            <div class="ring-center">
+              <span id="cycleDayText">第 -- 天</span>
+              <strong id="phaseName">等待輸入</strong>
+              <small id="phaseRange">--</small>
+            </div>
+          </div>
+
+          <dl class="mini-stats">
+            <div>
+              <dt>下次生理期</dt>
+              <dd id="nextPeriodText">--</dd>
+            </div>
+            <div>
+              <dt>距離下次</dt>
+              <dd id="daysUntilNext">--</dd>
+            </div>
+            <div>
+              <dt>排卵日</dt>
+              <dd id="ovulationText">--</dd>
+            </div>
+            <div>
+              <dt>受孕窗</dt>
+              <dd id="fertileText">--</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="stage-card">
+          <div>
+            <p class="eyebrow">身體階段</p>
+            <h2 id="bodyStageTitle">正在整理週期</h2>
+            <p id="bodyStageText">完成設定後，這裡會顯示目前階段、照護提醒與接下來的重要日期。</p>
+          </div>
+          <button class="arrow-button" type="button" data-tab-target="care" aria-label="查看自我護理">
+            <svg><use href="#icon-chevron"></use></svg>
+          </button>
+        </section>
+
+        <section class="quick-grid">
+          <article class="quick-tile">
+            <span class="tile-icon rose"><svg><use href="#icon-droplet"></use></svg></span>
+            <strong id="nextActionText">記錄今天狀態</strong>
+            <small>流量、疼痛、心情與備註</small>
+          </article>
+          <article class="quick-tile">
+            <span class="tile-icon teal"><svg><use href="#icon-calendar"></use></svg></span>
+            <strong id="daysUntilOvulation">--</strong>
+            <small>距離預估排卵日</small>
+          </article>
+        </section>
       </section>
 
-      <section class="workspace">
-        <form class="panel input-panel" id="cycleForm">
-          <div class="section-head">
+      <section class="tab-panel" data-tab-panel="calendar">
+        <section class="panel calendar-panel">
+          <div class="section-head compact">
             <div>
-              <p class="eyebrow">週期設定</p>
-              <h2>基本資料</h2>
+              <p class="eyebrow">日曆</p>
+              <h2 id="calendarTitle">--</h2>
             </div>
-            <button class="ghost-button" type="button" id="resetBtn">重設</button>
+            <div class="icon-row">
+              <button type="button" class="round-icon small" id="prevMonth" aria-label="上一個月">‹</button>
+              <button type="button" class="text-pill" id="currentMonth">本月</button>
+              <button type="button" class="round-icon small" id="nextMonth" aria-label="下一個月">›</button>
+            </div>
+          </div>
+          <div class="weekday-grid" aria-hidden="true">
+            <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="legend" aria-label="圖例">
+            <span><i class="legend-period"></i>生理期</span>
+            <span><i class="legend-fertile"></i>受孕窗</span>
+            <span><i class="legend-ovulation"></i>排卵日</span>
+            <span><i class="legend-luteal"></i>黃體期</span>
+            <span><i class="legend-note"></i>有記錄</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="tab-panel" data-tab-panel="log">
+        <section class="panel log-panel">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">本機記錄</p>
+              <h2 id="logTitle">今日記錄</h2>
+            </div>
+            <span class="selected-date" id="selectedDateText">--</span>
           </div>
 
           <label class="field">
-            <span>上次月經第一天</span>
+            <span>流量</span>
+            <select id="flowLevel">
+              <option value="">未記錄</option>
+              <option value="light">少量</option>
+              <option value="medium">中等</option>
+              <option value="heavy">偏多</option>
+            </select>
+          </label>
+
+          <label class="field pain-field">
+            <span>疼痛程度</span>
+            <input id="painLevel" type="range" min="0" max="10" step="1" value="0" />
+            <output id="painOutput" for="painLevel">0 / 10</output>
+          </label>
+
+          <fieldset class="choice-field">
+            <legend>心情</legend>
+            <label><input type="radio" name="mood" value="" checked />未記錄</label>
+            <label><input type="radio" name="mood" value="steady" />穩定</label>
+            <label><input type="radio" name="mood" value="sensitive" />敏感</label>
+            <label><input type="radio" name="mood" value="tired" />疲倦</label>
+          </fieldset>
+
+          <fieldset class="symptom-field">
+            <legend>症狀</legend>
+            <label><input type="checkbox" name="symptoms" value="cramps" />腹痛</label>
+            <label><input type="checkbox" name="symptoms" value="headache" />頭痛</label>
+            <label><input type="checkbox" name="symptoms" value="bloating" />脹氣</label>
+            <label><input type="checkbox" name="symptoms" value="breast" />胸部不適</label>
+            <label><input type="checkbox" name="symptoms" value="acne" />痘痘</label>
+            <label><input type="checkbox" name="symptoms" value="sleep" />睡不好</label>
+          </fieldset>
+
+          <label class="field">
+            <span>備註</span>
+            <textarea id="notes" rows="4" placeholder="症狀、藥物、睡眠、運動等"></textarea>
+          </label>
+
+          <div class="button-row">
+            <button class="primary-button" type="button" id="saveLogBtn">
+              <svg><use href="#icon-save"></use></svg>
+              儲存
+            </button>
+            <button class="secondary-button" type="button" id="clearLogBtn">清除</button>
+          </div>
+          <p class="form-note" id="logStatus" aria-live="polite"></p>
+        </section>
+      </section>
+
+      <section class="tab-panel" data-tab-panel="care">
+        <section class="panel care-panel">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">自我護理</p>
+              <h2>今日建議</h2>
+            </div>
+          </div>
+          <div class="care-list" id="careList"></div>
+        </section>
+
+        <section class="panel timeline-panel">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">預測</p>
+              <h2>接下來的週期</h2>
+            </div>
+          </div>
+          <ol class="cycle-list" id="cycleList"></ol>
+        </section>
+      </section>
+
+      <section class="tab-panel" data-tab-panel="settings">
+        <form class="panel input-panel" id="cycleForm">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">我的</p>
+              <h2>週期設定</h2>
+            </div>
+            <button class="round-icon small" type="button" id="resetBtn" aria-label="重設">
+              <svg><use href="#icon-refresh"></use></svg>
+            </button>
+          </div>
+
+          <label class="field">
+            <span>上次生理期第一天</span>
             <input id="lastPeriod" name="lastPeriod" type="date" required />
           </label>
 
@@ -54,7 +275,7 @@
               <input id="cycleLength" name="cycleLength" type="number" min="21" max="45" step="1" value="28" required />
             </label>
             <label class="field">
-              <span>月經持續天數</span>
+              <span>生理期持續天數</span>
               <input id="periodLength" name="periodLength" type="number" min="2" max="10" step="1" value="5" required />
             </label>
           </div>
@@ -83,136 +304,46 @@
             </select>
           </label>
 
-          <button class="primary-button" type="submit">計算週期</button>
-          <button class="secondary-button" type="button" id="exportBtn">匯出日曆</button>
+          <button class="primary-button" type="submit">更新預測</button>
+          <button class="secondary-button" type="button" id="exportBtn">
+            <svg><use href="#icon-download"></use></svg>
+            匯出日曆
+          </button>
           <p class="form-note" id="validationNote" aria-live="polite"></p>
         </form>
 
-        <section class="panel status-panel" aria-live="polite">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">目前狀態</p>
-              <h2 id="phaseTitle">尚未計算</h2>
-            </div>
-            <span class="phase-token" id="phaseToken">--</span>
-          </div>
-
-          <div class="cycle-visual">
-            <div class="cycle-ring" id="cycleRing" aria-label="週期視覺化">
-              <div class="cycle-pointer" id="cyclePointer"></div>
-              <div class="ring-center">
-                <span id="cycleDayText">第 -- 天</span>
-                <strong id="phaseName">等待輸入</strong>
-                <small id="phaseRange">--</small>
-              </div>
-            </div>
-          </div>
-
-          <dl class="summary-grid">
-            <div class="metric">
-              <dt>下次月經</dt>
-              <dd id="nextPeriodText">--</dd>
-            </div>
-            <div class="metric">
-              <dt>排卵日</dt>
-              <dd id="ovulationText">--</dd>
-            </div>
-            <div class="metric">
-              <dt>受孕窗</dt>
-              <dd id="fertileText">--</dd>
-            </div>
-            <div class="metric">
-              <dt>黃體期</dt>
-              <dd id="lutealText">--</dd>
-            </div>
-          </dl>
+        <section class="panel privacy-panel">
+          <p class="eyebrow">資料</p>
+          <h2>只存在這台手機</h2>
+          <p>記錄會保存在瀏覽器本機儲存空間，不會自動上傳。若清除 Safari 網站資料，記錄也會被清除。</p>
         </section>
       </section>
 
-      <section class="planner-grid">
-        <section class="panel calendar-panel">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">月曆</p>
-              <h2 id="calendarTitle">--</h2>
-            </div>
-            <div class="calendar-actions">
-              <button type="button" class="icon-button" id="prevMonth" aria-label="上一個月">‹</button>
-              <button type="button" class="icon-button" id="currentMonth">本月</button>
-              <button type="button" class="icon-button" id="nextMonth" aria-label="下一個月">›</button>
-            </div>
-          </div>
-          <div class="weekday-grid" aria-hidden="true">
-            <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
-          </div>
-          <div class="calendar-grid" id="calendarGrid"></div>
-          <div class="legend" aria-label="圖例">
-            <span><i class="legend-period"></i>月經期</span>
-            <span><i class="legend-fertile"></i>受孕窗</span>
-            <span><i class="legend-ovulation"></i>排卵日</span>
-            <span><i class="legend-luteal"></i>黃體期</span>
-            <span><i class="legend-note"></i>有記錄</span>
-          </div>
-        </section>
-
-        <section class="panel timeline-panel">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">預測</p>
-              <h2>接下來的週期</h2>
-            </div>
-          </div>
-          <ol class="cycle-list" id="cycleList"></ol>
-        </section>
-
-        <section class="panel log-panel">
-          <div class="section-head">
-            <div>
-              <p class="eyebrow">本機記錄</p>
-              <h2 id="logTitle">今日記錄</h2>
-            </div>
-            <span class="selected-date" id="selectedDateText">--</span>
-          </div>
-
-          <label class="field">
-            <span>流量</span>
-            <select id="flowLevel">
-              <option value="">未記錄</option>
-              <option value="light">少量</option>
-              <option value="medium">中等</option>
-              <option value="heavy">偏多</option>
-            </select>
-          </label>
-
-          <label class="field pain-field">
-            <span>疼痛程度</span>
-            <input id="painLevel" type="range" min="0" max="10" step="1" value="0" />
-            <output id="painOutput" for="painLevel">0 / 10</output>
-          </label>
-
-          <fieldset class="mood-field">
-            <legend>心情</legend>
-            <label><input type="radio" name="mood" value="" checked />未記錄</label>
-            <label><input type="radio" name="mood" value="steady" />穩定</label>
-            <label><input type="radio" name="mood" value="sensitive" />敏感</label>
-            <label><input type="radio" name="mood" value="tired" />疲倦</label>
-          </fieldset>
-
-          <label class="field">
-            <span>備註</span>
-            <textarea id="notes" rows="4" placeholder="症狀、藥物、睡眠、運動等"></textarea>
-          </label>
-
-          <div class="button-row">
-            <button class="primary-button" type="button" id="saveLogBtn">儲存記錄</button>
-            <button class="secondary-button" type="button" id="clearLogBtn">清除</button>
-          </div>
-          <p class="form-note" id="logStatus" aria-live="polite"></p>
-        </section>
-      </section>
+      <nav class="bottom-nav" aria-label="主要導覽">
+        <button class="nav-item is-active" type="button" data-tab="today">
+          <svg><use href="#icon-flower"></use></svg>
+          <span>今天</span>
+        </button>
+        <button class="nav-item" type="button" data-tab="calendar">
+          <svg><use href="#icon-calendar"></use></svg>
+          <span>日曆</span>
+        </button>
+        <button class="nav-item nav-add" type="button" data-tab="log" aria-label="新增記錄">
+          <span class="add-bubble"><svg><use href="#icon-plus"></use></svg></span>
+          <span>記錄</span>
+        </button>
+        <button class="nav-item" type="button" data-tab="care">
+          <svg><use href="#icon-heart"></use></svg>
+          <span>護理</span>
+        </button>
+        <button class="nav-item" type="button" data-tab="settings">
+          <svg><use href="#icon-user"></use></svg>
+          <span>我的</span>
+        </button>
+      </nav>
 
       <footer class="source-footer">
-        <p>計算來源：週期從月經第一天算到下次月經第一天；排卵日以「下次月經前推黃體期」估算；受孕窗採排卵日前 5 天至排卵後 1 天。</p>
+        <p>本工具只做週期估算，不能取代醫療診斷、避孕方式或懷孕判定。</p>
         <p>
           參考：
           <a href="https://womenshealth.gov/menstrual-cycle/your-menstrual-cycle" target="_blank" rel="noreferrer">Office on Women’s Health</a>
